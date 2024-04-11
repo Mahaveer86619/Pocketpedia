@@ -7,18 +7,22 @@ import com.seven.pocketpedia.domain.model.Definition
 import com.seven.pocketpedia.domain.model.Meaning
 import com.seven.pocketpedia.domain.model.WordItem
 
-fun WordItemDto.toWordItem() = WordItem (
-    word = word ?: "",
-    meanings = meanings?.map {
-        it.toMeaning()
-    } ?: emptyList(),
-    phonetic = phonetic ?: "",
-)
+fun WordItemDto.toWordItem() = (meanings?.map {
+    it.toMeaning()
+} ?: emptyList()).let {
+    WordItem (
+        word = word ?: "",
+        meanings = it,
+        phonetic = phonetic ?: "",
+    )
+}
 
-fun MeaningDto.toMeaning() = Meaning(
-    definition = definitionDtoToDefinition(definitions?.get(0)),
-    partOfSpeech = partOfSpeech ?: "",
-)
+fun MeaningDto.toMeaning() = definitions?.get(0)?.let { definitionDtoToDefinition(it) }?.let {
+    Meaning(
+        definition = it,
+        partOfSpeech = partOfSpeech ?: "",
+    )
+}
 
 fun definitionDtoToDefinition(definitionDto: DefinitionDto) = Definition(
     definition = definitionDto.definition ?: "",
