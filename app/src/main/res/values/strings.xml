@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Pocketpedia</string>
+    <string name="cant_get_result">Can\'t Get Result. HttpException</string>
+    <string name="can_t_get_result_i_o_exception">Can\'t get result. I/O Exception</string>
+    <string name="can_t_get_result_exception">Can\'t get result. Exception</string>
 </resources>
