@@ -22,12 +22,26 @@ class LandingViewModel @Inject constructor(
     private val _state = MutableStateFlow(LandingState())
     val state = _state.asStateFlow()
 
-    private val searchJob: Job? = null
+    private var searchJob: Job? = null
+
+    init {
+        _state.update { it.copy(
+            searchWord = "Word"
+        ) }
+
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            loadWordResult()
+        }
+    }
 
     fun onEvent(event: LandingEvent) {
         when (event) {
             LandingEvent.OnSearchClick -> {
-                loadWordResult()
+                searchJob?.cancel()
+                searchJob = viewModelScope.launch {
+                    loadWordResult()
+                }
             }
 
             is LandingEvent.OnSearchWordChange -> {
